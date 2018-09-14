@@ -28,6 +28,7 @@ def main():
     # 设置为无头浏览器
     # opt = webdriver.ChromeOptions()
     # opt.set_headless()
+    ## opt.add_argument('--proxy-server=http://ip:port')  # 此为通过chrome设置代理ip
     # driver = webdriver.Chrome(options=opt)
 
     # 此为有界面浏览器
