@@ -35,24 +35,21 @@ def main():
     driver.maximize_window()  # 窗口最大化
     url = '需要登录的网站url'
     driver.get(url)  # 进入网站登录页面
-    driver.implicitly_wait(10)  # 智能等待元素加载完成
+    driver.implicitly_wait(30)  # 智能等待元素加载完成
+    
+    # 需要特别说明的是：隐性等待对整个driver的周期都起作用，所以只要设置一次即可，我曾看到有人把隐性等待当成了sleep在用，走哪儿都来一下…
+    
     driver.find_element_by_xpath('//*[@id="dl"]/input[1]').send_keys('你的用户名')  # 输入用户名
-    driver.implicitly_wait(10)
     driver.find_element_by_id('password').click()
     name = driver.find_element_by_id('password')
 
     # 因为有js存在，不能直接输入密码，所以需要使用鼠标类模拟，再执行js代码来输入密码
     actions = ActionChains(driver).move_to_element(name)  
     driver.execute_script('document.getElementById("password").value="你的密码"')
-    driver.implicitly_wait(10)
     driver.find_element_by_xpath('//*[@id="dl"]/input[4]').submit()  # 提交表单
-    driver.implicitly_wait(10)
     driver.find_element_by_xpath('//*[@id="apDiv33"]/a').click()  # 点击页面元素
-    driver.implicitly_wait(10)
     driver.switch_to.window(driver.window_handles[-1])  # 切换不同的tab页，切换到当前句柄
-    driver.implicitly_wait(10)
     driver.find_element_by_xpath('//*[@id="accordion1"]/div[2]/a[2]').click()  # 点击需要的信息
-    driver.implicitly_wait(10)  
     
     # 切换iframe到数据页
     # 注意：此处如果不查找表格中的一个元素的话，直接写入文件中，会导致表格中的元素都隐藏，写不进去
