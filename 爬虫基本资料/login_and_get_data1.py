@@ -48,7 +48,7 @@ def parse_html1(html):
             writer.writerow(data)
 
 
-def parse_html(html):
+def parse_html2(html):
     # 使用BeautifulSoup提取信息
     soup = BeautifulSoup(html, 'lxml')
     # table有2个，取后面那个
@@ -67,6 +67,29 @@ def parse_html(html):
         writer = csv.writer(csvfile)
         for data in data_list:
             writer.writerow(data)
+
+def parse_html(html):
+    ''' 
+        使用 xpath 来提取网页信息
+        XPath 是一门在 XML 文档中查找信息(节点)的语言。
+        XPath 可用来在 XML 文档中对元素和属性进行遍历。
+    '''
+    html = etree.HTML(html)
+    tr_list = html.xpath('//*[@id="maingridgrid"]/div[4]/div[2]/div/table/tbody/tr')
+    data_list = []          
+    for tr in tr_list:      
+        data = []           
+        for td in tr.xpath('./td/div[@class="l-grid-row-cell-inner"]'):
+            data.append(td.text) 
+        print(data)
+        data_list.append(data)
+    # print(data_list)
+
+    with open('test.csv', 'a', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+        for data in data_list:
+            writer.writerow(data)
+            
 
 def main():
     # 设置为无头浏览器
