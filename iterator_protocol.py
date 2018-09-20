@@ -9,6 +9,9 @@ Desc :
 class Node:
     '''
         以深度优先方式遍历树形节点的生成器
+        在这段代码中，depth_first() 方法简单直观。
+        它首先返回自己本身并迭代每一个子节点并通过
+        调用子节点的 depth_first() 方法(使用 yield from 语句)返回对应元素。
     '''
     def __init__(self, value):
         self._value = value
@@ -32,10 +35,7 @@ class Node:
 
 class Node2:
     '''
-        以深度优先方式遍历树形节点的迭代器
-        在这段代码中，depth_first() 方法简单直观。
-        它首先返回自己本身并迭代每一个子节点并通过
-        调用子节点的 depth_first() 方法(使用 yield from 语句)返回对应元素。
+        以深度优先方式遍历树形节点的迭代器        
     '''
     def __init__(self, value):
         self._value = value
