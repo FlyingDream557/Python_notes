@@ -6,12 +6,12 @@ data1 = {'a': [1, 2.0, 3, 4+6j],
          'c': None}
 
 print(type(data1))
-f = open('s.pickle', 'wb')
-pickle.dump(data1, f)
-f.close()
+
+with open('s.pickle', 'wb') as f:
+    pickle.dump(data1, f)
 
 print('----------------------------')
 
-f1 = open('s.pickle', 'rb')
-s1 = pickle.load(f1)
-print(s1)
+with open('s.pickle', 'rb') as f1:
+    pickle.load(f1)
+    print(s1)
