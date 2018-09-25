@@ -92,8 +92,9 @@ def parse_html(html):
         print(data)
         data_list.append(data)
     # print(data_list)
-
-    with open('test.csv', 'a', encoding='utf-8') as csvfile:
+    
+    # 注意此处一定要加参数：newline='',否则会每个都空一行.不写编码格式，默认为 gbk
+    with open('test.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         for data in data_list:
             writer.writerow(data)
@@ -106,7 +107,7 @@ def main():
     url = '需要登录的网址' 
     login(driver, url)
 
-    with open('test.csv', 'a', encoding='utf-8') as csvfile:
+    with open('test.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['字段1', '字段2', '字段3', '字段4', '字段5', '字段6', '字段7'])
 
