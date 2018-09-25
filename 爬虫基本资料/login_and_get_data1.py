@@ -5,38 +5,47 @@ import csv
 import re
 import time
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.action_chains import ActionChains  # 模拟鼠标事件类
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.options import Options
 
 
 def login(driver, url):
-    driver.get(url)
+    driver.get(url)  # 进入网站登录页面
     driver.implicitly_wait(30)  # 智能等待元素加载完成
-    # 需要特别说明的是：隐性等待对整个driver的周期都起作用，所以只要设置一次即可，我曾看到有人把隐性等待当成了sleep在用，走哪儿都来一下…
+    # 需要特别说明的是：
+    #    隐性等待对整个driver的周期都起作用，所以只要设置一次即可，
+    #    我曾看到有人把隐性等待当成了sleep在用，走哪儿都来一下…
+    #    (没发现这句话前，我也是这莫干的...)
     
     time.sleep(2)
-    driver.find_element_by_xpath('//*[@id="dl"]/input[1]').send_keys('152307')
+    driver.find_element_by_xpath('//*[@id="dl"]/input[1]').send_keys('你的用户名')
     driver.find_element_by_id('password').click()
-    name = driver.find_element_by_id('password')
-    actions = ActionChains(driver).move_to_element(name)
-    driver.execute_script('document.getElementById("password").value="aiNI19930827"')
+    
+    # 因为密码框中有js的存在，不能直接输入密码，所以需要通过执行js代码来输入密码
+    driver.execute_script('document.getElementById("password").value="你的密码"')
+    # 或者通过jquery的方式：
+    # driver.execute_script("$('#password').val('你的密码')")
     time.sleep(1.5)
     driver.find_element_by_xpath('//*[@id="dl"]/input[4]').submit()
     driver.find_element_by_xpath('//*[@id="apDiv33"]/a').click() 
-    # 句柄已经切换过来，但是焦点没有切过去。 需要将焦点切过来，才能对当前页进行操作
-    driver.switch_to.window(driver.window_handles[-1])  # 切换不同的tab页
+    
+    # 切换不同的tab页 (获取所有的句柄,要切换的是最后一个，使用[-1]直接切过去)
+    # 备注：句柄已经切换过来，但是焦点没有切过去。 
+    #       需要switch_to.window 把焦点切过来，才能对当前页进行操作
+    driver.switch_to.window(driver.window_handles[-1])  
     driver.find_element_by_xpath('//*[@id="accordion1"]/div[2]/a[2]').click()
 
     # 切换iframe到数据页
-    # 注意：此处如果不查找表格中的一个元素的话，直接写入文件中，会导致表格中的元素都隐藏，写不进去
     driver.switch_to.frame(driver.find_element_by_id('97'))
-    # 解决方法：通过查找其中一个，展开网页，然后再写入文件，则可以将所有的元素都写入文件
+    # 注意：此处如果不查找表格中的一个元素的话，直接写入文件中，会导致表格中的元素都隐藏，写不进去
+    # 解决方法：通过查找其中一个元素来展开网页，然后再写入文件，则可以将所有的元素都写入文件中
     driver.find_element_by_xpath('//*[@id="maingrid|2|r1001|c103"]/div')
 
 
 def parse_html1(html):
     # 使用正则表达式提取信息
+    # 注意此处 .*? 与 (.*?) 的用法
     pattern = r'<div class="l-grid-row-cell-inner" style="width:112px;height:22px;min-height:22px; ">(.*?)</div>.*?<div class="l-grid-row-cell-inner" style="width:112px;height:22px;min-height:22px; ">(.*?)</div>.*?<div class="l-grid-row-cell-inner" style="width:92px;height:22px;min-height:22px; ">(.*?)</div>.*?<div class="l-grid-row-cell-inner" style="width:92px;height:22px;min-height:22px; ">(.*?)</div>.*?<div class="l-grid-row-cell-inner" style="width:112px;height:22px;min-height:22px; ">(.*?)</div>.*?<div class="l-grid-row-cell-inner" style="width:122px;height:22px;min-height:22px; ">(.*?)</div>.*?<div class="l-grid-row-cell-inner" style="width:122px;height:22px;min-height:22px; ">(.*?)</div>'
     data_list = re.findall(pattern, html)
     print(len(data_list))
@@ -92,11 +101,8 @@ def parse_html(html):
             
 
 def main():
-    # 设置为无头浏览器
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # define headless
-
-    driver = webdriver.Chrome(chrome_options=chrome_options)
+    # 有界面浏览器模式
+    driver = webdriver.Chrome()
     # driver.maximize_window()
     url = '需要登录的网址' 
     login(driver, url)
