@@ -6,7 +6,7 @@ import re
 import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from xlml import etree
+from lxml import etree
 
 
 def login(driver, url):
