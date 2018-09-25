@@ -5,9 +5,8 @@ import csv
 import re
 import time
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains  # 模拟鼠标事件类
 from bs4 import BeautifulSoup
-from selenium.webdriver.chrome.options import Options
+from xlml import etree
 
 
 def login(driver, url):
@@ -101,7 +100,7 @@ def parse_html(html):
             
 
 def main():
-    # 有界面浏览器模式
+    # 此为有界面的浏览器模式
     driver = webdriver.Chrome()
     # driver.maximize_window()
     url = '需要登录的网址' 
