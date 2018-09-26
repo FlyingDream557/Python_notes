@@ -94,7 +94,6 @@ def parse_html(html):
     # print(data_list)
     
     # 注意此处一定要加参数：newline='', 否则会每行中间都空一行.
-    #   open函数如果不写编码格式,使用的是与平台相关的编码。
     with open('test.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         for data in data_list:
