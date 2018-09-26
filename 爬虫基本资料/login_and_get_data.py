@@ -93,7 +93,8 @@ def parse_html(html):
         data_list.append(data)
     # print(data_list)
     
-    # 注意此处一定要加参数：newline='',否则会每个都空一行.不写编码格式，默认为 gbk
+    # 注意此处一定要加参数：newline='', 否则会每行中间都空一行.
+    #   open函数如果不写编码格式,使用的是与平台相关的编码。
     with open('test.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         for data in data_list:
@@ -106,7 +107,14 @@ def main():
     # driver.maximize_window()
     url = '需要登录的网址' 
     login(driver, url)
-
+    
+    # 注意此处open函数的编码: (来自于python官方文档)
+    #   open函数在文本模式下，如果编码未指定，使用的编码是与平台相关的本地编码。 
+    #   本地编码获取方式:
+    #      import locale 
+    #       locale.getpreferredencoding(False) 被称为获取当前的本地编码。
+    #   windows上得到的是 cp936
+    #   CP936其实就是GBK，IBM在发明Code Page的时候将GBK放在第936页，所以叫CP936。
     with open('test.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['字段1', '字段2', '字段3', '字段4', '字段5', '字段6', '字段7'])
