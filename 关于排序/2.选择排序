@@ -1,0 +1,19 @@
+# -*- coding:utf-8 -*-
+
+
+# 选择排序，从其中找出最小的，放最前，再从剩余中找出最小的，放倒数第二 。。。
+def selection_sort(arr):
+    for i in range(len(arr) - 1):
+        # 记录最小的索引
+        minIndex = i  # 假设当前的是最小值，然后再与后面的比较，小则替换。
+        for j in range(i + 1, len(arr)):  # 将当前与后面的(所以+1)依次比较
+            if arr[j] < arr[minIndex]:
+                minIndex = j
+        # i不是最小数时，将j替换为最小索引
+        # if i != minIndex:
+        if minIndex != i:  # i 不是最小数时，将 i 和最小数进行交换
+            arr[i], arr[minIndex] = arr[minIndex], arr[i]
+    return arr
+
+a=[1,2,3,4,5,1,6,0]
+print(selection_sort(a))
