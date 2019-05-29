@@ -1,0 +1,34 @@
+# -*- coding: utf-8 -*- # 编码声明
+
+
+# 实现排序中，最简单的排序，冒泡排序，比较相邻的，如果错误，则交换位置
+
+def bubble_sort(arr):
+    '''
+    冒泡排序
+    param arr:未排序的列表
+    return:已排序的列表
+    '''
+    for i in range(1, len(arr)):
+        for j in range(0, len(arr)-i):   # 此过程是，先比较开始2个，循环一直到倒数第二个与倒数第一个。  外层循环的最后，再比较前2个
+            # for j in range(i):    # 先比较前2个，然后最后还是比较相邻2个直接到最后，实际上没有意义。 (此为开始我的写法，以你为戒)
+            # print("j, i =", j, i)
+            if arr[j] > arr[j+1]:  # 相邻2元素两两对比
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                # print('i=', i,'arr=', arr)
+
+    return arr
+
+
+a=[1,2,3,4,5,1,6,0]
+print(bubble_sort(a))
+
+# 如果使用 for j in range(i) 效果会如下，也达不到最终的结果。
+# i=5
+# 1 2 3 4 1 5 6 0
+# i=6
+# 1 2 3 1 4 5 6 0
+# i=7
+# 1 2 1 3 4 5 0 6
+
+
